@@ -18,7 +18,7 @@ class ProductServiceTest {
     private ProductService productService;
 
     @Test
-    @Transactional("secondaryTransactionManager")
+    @Transactional("reportingTransactionManager")
     void testCreateAndGetProduct() {
         // Given
         String name = "Laptop";
@@ -41,7 +41,7 @@ class ProductServiceTest {
     }
 
     @Test
-    @Transactional("secondaryTransactionManager")
+    @Transactional("reportingTransactionManager")
     void testGetAllProducts() {
         // Given
         productService.createProduct("Mouse", 25.0);

@@ -19,36 +19,36 @@ import java.util.Objects;
 @EnableTransactionManagement
 @EnableJpaRepositories(
         basePackages = "net.parksy.dbmulti.secondary.repository",
-        entityManagerFactoryRef = "secondaryEntityManagerFactory",
-        transactionManagerRef = "secondaryTransactionManager"
+        entityManagerFactoryRef = "reportingEntityManagerFactory",
+        transactionManagerRef = "reportingTransactionManager"
 )
-public class SecondaryDbConfig {
+public class ReportingDbConfig {
 
-    @Bean(name = "secondaryDataSourceProperties")
+    @Bean(name = "reportingDataSourceProperties")
     @ConfigurationProperties("datasources.reporting")
-    public DataSourceProperties secondaryDataSourceProperties() {
+    public DataSourceProperties reportingDataSourceProperties() {
         return new DataSourceProperties();
     }
 
-    @Bean(name = "secondaryDataSource")
-    public DataSource secondaryDataSource() {
-        return secondaryDataSourceProperties().initializeDataSourceBuilder().build();
+    @Bean(name = "reportingDataSource")
+    public DataSource reportingDataSource() {
+        return reportingDataSourceProperties().initializeDataSourceBuilder().build();
     }
 
-    @Bean(name = "secondaryEntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean secondaryEntityManagerFactory(
+    @Bean(name = "reportingEntityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean reportingEntityManagerFactory(
             EntityManagerFactoryBuilder builder,
-            @Qualifier("secondaryDataSource") DataSource dataSource) {
+            @Qualifier("reportingDataSource") DataSource dataSource) {
         return builder
                 .dataSource(dataSource)
                 .packages("net.parksy.dbmulti.secondary.entity")
-                .persistenceUnit("secondary")
+                .persistenceUnit("reporting")
                 .build();
     }
 
-    @Bean(name = "secondaryTransactionManager")
-    public PlatformTransactionManager secondaryTransactionManager(
-            @Qualifier("secondaryEntityManagerFactory") LocalContainerEntityManagerFactoryBean secondaryEntityManagerFactory) {
-        return new JpaTransactionManager(Objects.requireNonNull(secondaryEntityManagerFactory.getObject()));
+    @Bean(name = "reportingTransactionManager")
+    public PlatformTransactionManager reportingTransactionManager(
+            @Qualifier("reportingEntityManagerFactory") LocalContainerEntityManagerFactoryBean reportingEntityManagerFactory) {
+        return new JpaTransactionManager(Objects.requireNonNull(reportingEntityManagerFactory.getObject()));
     }
 }

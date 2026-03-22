@@ -15,7 +15,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    @Transactional("secondaryTransactionManager")
+    @Transactional("reportingTransactionManager")
     public Product createProduct(String name, Double price) {
         Product product = Product.builder()
                 .name(name)
