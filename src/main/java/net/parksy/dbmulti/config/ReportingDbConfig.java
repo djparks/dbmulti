@@ -19,7 +19,7 @@ import java.util.Objects;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = "net.parksy.dbmulti.secondary.repository",
+        basePackages = "net.parksy.dbmulti.reporting.repository",
         entityManagerFactoryRef = "reportingEntityManagerFactory",
         transactionManagerRef = "reportingTransactionManager"
 )
@@ -42,7 +42,7 @@ public class ReportingDbConfig {
             @Qualifier("reportingDataSource") DataSource dataSource) {
         return builder
                 .dataSource(dataSource)
-                .packages("net.parksy.dbmulti.secondary.entity")
+                .packages("net.parksy.dbmulti.reporting.entity")
                 .persistenceUnit("reporting")
                 .build();
     }

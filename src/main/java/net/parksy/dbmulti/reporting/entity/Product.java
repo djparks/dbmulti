@@ -1,4 +1,4 @@
-package net.parksy.dbmulti.secondary.entity;
+package net.parksy.dbmulti.reporting.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

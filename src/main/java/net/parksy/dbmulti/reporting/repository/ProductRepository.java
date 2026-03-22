@@ -1,6 +1,6 @@
-package net.parksy.dbmulti.secondary.repository;
+package net.parksy.dbmulti.reporting.repository;
 
-import net.parksy.dbmulti.secondary.entity.Product;
+import net.parksy.dbmulti.reporting.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

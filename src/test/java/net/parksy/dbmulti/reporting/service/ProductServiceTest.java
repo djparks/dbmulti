@@ -1,6 +1,6 @@
-package net.parksy.dbmulti.secondary.service;
+package net.parksy.dbmulti.reporting.service;
 
-import net.parksy.dbmulti.secondary.entity.Product;
+import net.parksy.dbmulti.reporting.entity.Product;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

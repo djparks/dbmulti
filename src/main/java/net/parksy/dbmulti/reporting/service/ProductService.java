@@ -1,8 +1,8 @@
-package net.parksy.dbmulti.secondary.service;
+package net.parksy.dbmulti.reporting.service;
 
 import lombok.RequiredArgsConstructor;
-import net.parksy.dbmulti.secondary.entity.Product;
-import net.parksy.dbmulti.secondary.repository.ProductRepository;
+import net.parksy.dbmulti.reporting.entity.Product;
+import net.parksy.dbmulti.reporting.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
