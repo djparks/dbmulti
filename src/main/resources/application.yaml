@@ -4,15 +4,15 @@ first:
     driver-class-name: org.h2.Driver
     username: sa
     password:
+datasources:
+  reporting:
+    url: jdbc:h2:mem:secondarydb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
 spring:
   application:
     name: dbmulti
-  datasource:
-    secondary:
-      url: jdbc:h2:mem:secondarydb;DB_CLOSE_DELAY=-1
-      driver-class-name: org.h2.Driver
-      username: sa
-      password:
   h2:
     console:
       enabled: true

@@ -25,7 +25,7 @@ import java.util.Objects;
 public class SecondaryDbConfig {
 
     @Bean(name = "secondaryDataSourceProperties")
-    @ConfigurationProperties("spring.datasource.secondary")
+    @ConfigurationProperties("datasources.reporting")
     public DataSourceProperties secondaryDataSourceProperties() {
         return new DataSourceProperties();
     }
