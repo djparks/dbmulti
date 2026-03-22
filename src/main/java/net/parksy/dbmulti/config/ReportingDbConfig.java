@@ -12,6 +12,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import jakarta.persistence.EntityManager;
 import javax.sql.DataSource;
 import java.util.Objects;
 
@@ -50,5 +51,11 @@ public class ReportingDbConfig {
     public PlatformTransactionManager reportingTransactionManager(
             @Qualifier("reportingEntityManagerFactory") LocalContainerEntityManagerFactoryBean reportingEntityManagerFactory) {
         return new JpaTransactionManager(Objects.requireNonNull(reportingEntityManagerFactory.getObject()));
+    }
+
+    @Bean(name = "reportingEntityManager")
+    public EntityManager reportingEntityManager(
+            @Qualifier("reportingEntityManagerFactory") LocalContainerEntityManagerFactoryBean reportingEntityManagerFactory) {
+        return Objects.requireNonNull(reportingEntityManagerFactory.getObject()).createEntityManager();
     }
 }
