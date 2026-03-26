@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+src/main/java/net/parksy/dbmulti/config/.DS_Store
+src/main/java/net/parksy/.DS_Store
+src/main/java/net/parksy/dbmulti/.DS_Store
