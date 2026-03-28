@@ -3,6 +3,7 @@ package net.parksy.dbmulti.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +13,9 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -30,16 +33,33 @@ import javax.sql.DataSource;
 @Slf4j
 public class DatabaseConfiguration {
 
+    @Bean
+    @ConfigurationProperties("spring.jpa.hibernate")
+    public JpaProperties firstJpaProperties() {
+        return new JpaProperties();
+    }
+
     @Primary
     @Bean(name = "entityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(
-            EntityManagerFactoryBuilder builder,
-            @Qualifier("dataSource") DataSource dataSource) {
+            @Qualifier("dataSource") DataSource dataSource,
+            JpaProperties firstJpaProperties
+    ) {
+        EntityManagerFactoryBuilder builder = createEntityManagerFactoryBuilder(firstJpaProperties);
         return builder
                 .dataSource(dataSource)
                 .packages("net.parksy.dbmulti.entity")
                 .persistenceUnit("primary")
                 .build();
+    }
+
+    private EntityManagerFactoryBuilder createEntityManagerFactoryBuilder(JpaProperties jpaProperties) {
+        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        return new EntityManagerFactoryBuilder(
+                vendorAdapter,
+                jpaProperties.getProperties(),
+                null
+        );
     }
 
     @Primary
