@@ -33,8 +33,9 @@ import javax.sql.DataSource;
 @Slf4j
 public class DatabaseConfiguration {
 
+    @Primary
     @Bean
-    @ConfigurationProperties("spring.jpa.hibernate")
+    @ConfigurationProperties("spring.jpa")
     public JpaProperties firstJpaProperties() {
         return new JpaProperties();
     }
@@ -42,25 +43,26 @@ public class DatabaseConfiguration {
     @Primary
     @Bean(name = "entityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(
+            EntityManagerFactoryBuilder builder,
             @Qualifier("dataSource") DataSource dataSource,
-            JpaProperties firstJpaProperties
+            JpaProperties jpaProperties
     ) {
-        EntityManagerFactoryBuilder builder = createEntityManagerFactoryBuilder(firstJpaProperties);
         return builder
                 .dataSource(dataSource)
                 .packages("net.parksy.dbmulti.entity")
                 .persistenceUnit("primary")
+                .properties(jpaProperties.getProperties())
                 .build();
     }
 
-    private EntityManagerFactoryBuilder createEntityManagerFactoryBuilder(JpaProperties jpaProperties) {
-        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        return new EntityManagerFactoryBuilder(
-                vendorAdapter,
-                jpaProperties.getProperties(),
-                null
-        );
-    }
+//    private EntityManagerFactoryBuilder createEntityManagerFactoryBuilder(JpaProperties jpaProperties) {
+//        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+//        return new EntityManagerFactoryBuilder(
+//                vendorAdapter,
+//                jpaProperties.getProperties(),
+//                null
+//        );
+//    }
 
     @Primary
     @Bean(name = "transactionManager")
@@ -82,16 +84,6 @@ public class DatabaseConfiguration {
         return properties.initializeDataSourceBuilder().type(ClientInfoStatusDataSource.class).build();
     }
 
-    @Bean(name = "reportingDataSourceProperties")
-    @ConfigurationProperties("datasources.reporting")
-    public DataSourceProperties reportingDataSourceProperties() {
-        return new DataSourceProperties();
-    }
 
-    @Bean(name = "reportingDataSource")
-    public DataSource reportingDataSource(@Qualifier("reportingDataSourceProperties") DataSourceProperties properties) {
-        log.info("jdbc url: {}", properties.determineUrl());
-        return properties.initializeDataSourceBuilder().type(ClientInfoStatusDataSource.class).build();
-    }
 
 }
