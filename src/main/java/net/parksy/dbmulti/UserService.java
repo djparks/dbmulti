@@ -2,6 +2,7 @@ package net.parksy.dbmulti;
 
 import net.parksy.dbmulti.entity.User;
 import net.parksy.dbmulti.repository.UserRepository;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @Async
     @Transactional
     public void addUserAsync(UserDto userDto) {
         User user = User.builder()

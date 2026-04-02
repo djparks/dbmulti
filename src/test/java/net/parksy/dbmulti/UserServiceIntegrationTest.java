@@ -8,8 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 @SpringBootTest
 @Transactional
@@ -58,5 +60,26 @@ public class UserServiceIntegrationTest {
         User foundUser = userRepository.findById(savedUser.getId()).orElse(null);
         assertThat(foundUser).isNotNull();
         assertThat(foundUser.getUsername()).isEqualTo("newuser");
+    }
+
+    @Test
+    public void testAddUserAsync() {
+        // Given
+        UserDto userDto = UserDto.builder()
+                .username("asyncuser")
+                .email("asyncuser@example.com")
+                .build();
+
+        // When
+        userService.addUserAsync(userDto);
+
+        // Then
+        await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
+            User foundUser = userRepository.findUsersWithIdGreaterThanZero().stream()
+                    .filter(u -> "asyncuser".equals(u.getUsername()))
+                    .findFirst()
+                    .orElse(null);
+            assertThat(foundUser).isNotNull();
+        });
     }
 }
