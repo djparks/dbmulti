@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class UserService {
@@ -45,13 +46,7 @@ public class UserService {
                 .email(userDto.getEmail())
                 .build();
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                userRepository.save(user);
-            }
-        });
-        thread.start();
+         new Thread(() -> userRepository.save(user)).start();
     }
 
 }
