@@ -37,4 +37,26 @@ public class UserServiceIntegrationTest {
         assertThat(users).isNotEmpty();
         assertThat(users.get(0).getId()).isGreaterThan(0);
     }
+
+    @Test
+    public void testAddUser() {
+        // Given
+        UserDto userDto = UserDto.builder()
+                .username("newuser")
+                .email("newuser@example.com")
+                .build();
+
+        // When
+        User savedUser = userService.addUser(userDto);
+
+        // Then
+        assertThat(savedUser).isNotNull();
+        assertThat(savedUser.getId()).isNotNull();
+        assertThat(savedUser.getUsername()).isEqualTo("newuser");
+        assertThat(savedUser.getEmail()).isEqualTo("newuser@example.com");
+
+        User foundUser = userRepository.findById(savedUser.getId()).orElse(null);
+        assertThat(foundUser).isNotNull();
+        assertThat(foundUser.getUsername()).isEqualTo("newuser");
+    }
 }

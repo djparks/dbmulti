@@ -18,4 +18,13 @@ public class UserService {
     public List<User> getUsersWithIdGreaterThanZero() {
         return userRepository.findUsersWithIdGreaterThanZero();
     }
+
+    @Transactional
+    public User addUser(UserDto userDto) {
+        User user = User.builder()
+                .username(userDto.getUsername())
+                .email(userDto.getEmail())
+                .build();
+        return userRepository.save(user);
+    }
 }
