@@ -27,4 +27,14 @@ public class UserService {
                 .build();
         return userRepository.save(user);
     }
+
+    @Transactional
+    public void addUserAsync(UserDto userDto) {
+        User user = User.builder()
+                .username(userDto.getUsername())
+                .email(userDto.getEmail())
+                .build();
+         userRepository.save(user);
+    }
+
 }
