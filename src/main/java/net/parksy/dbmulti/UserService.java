@@ -39,4 +39,19 @@ public class UserService {
          userRepository.save(user);
     }
 
+    public void addUserWithManualThread(UserDto userDto) {
+        User user = User.builder()
+                .username(userDto.getUsername())
+                .email(userDto.getEmail())
+                .build();
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                userRepository.save(user);
+            }
+        });
+        thread.start();
+    }
+
 }
