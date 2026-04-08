@@ -108,4 +108,22 @@ public class UserServiceIntegrationTest {
             assertThat(foundUser).isNotNull();
         });
     }
+
+    @Test
+    public void testUpdateFirstUserToUserOne() {
+        // Given
+        User user = User.builder()
+                .username("initial")
+                .email("initial@example.com")
+                .build();
+        userRepository.save(user);
+        userRepository.flush();
+
+        // When
+        userService.updateFirstUserToUserOne();
+
+        // Then
+        User updatedUser = userRepository.findById(user.getId()).orElseThrow();
+        assertThat(updatedUser.getUsername()).isEqualTo("userone");
+    }
 }
