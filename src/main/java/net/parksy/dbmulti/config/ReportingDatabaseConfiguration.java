@@ -2,13 +2,16 @@ package net.parksy.dbmulti.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
-import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -30,22 +33,20 @@ public class ReportingDatabaseConfiguration {
 
     @Bean(name = "reportJpaProperties")
     @ConfigurationProperties("spring.jpa.hibernate")
-    public JpaProperties reportJpaProperties() {
-        JpaProperties jpaProperties = new JpaProperties();
-        log.info("jpa properties: {}", jpaProperties.getProperties());
-        return jpaProperties;
+    public Map<String, String> reportJpaProperties() {
+        return new HashMap<>();
     }
 
     @Bean(name = "reportingEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean reportingEntityManagerFactory(
             EntityManagerFactoryBuilder builder,
             @Qualifier("reportingDataSource") DataSource dataSource,
-            @Qualifier("reportJpaProperties") JpaProperties jpaProperties) {
+            @Qualifier("reportJpaProperties") Map<String, String> jpaProperties) {
         return builder
                 .dataSource(dataSource)
                 .packages(DatabaseConfiguration.BASE_PACKAGE)
                 .persistenceUnit("reporting")
-                .properties(jpaProperties.getProperties())
+                .properties(jpaProperties)
                 .build();
     }
 
