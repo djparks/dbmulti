@@ -2,6 +2,7 @@ package net.parksy.dbmulti;
 
 import net.parksy.dbmulti.entity.User;
 import net.parksy.dbmulti.repository.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
 @SpringBootTest
-@Transactional
 public class UserServiceIntegrationTest {
 
     @Autowired
@@ -22,6 +22,11 @@ public class UserServiceIntegrationTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @BeforeEach
+    public void setUp() {
+        userRepository.deleteAll();
+    }
 
     @Test
     public void testGetUsersWithIdGreaterThanZero() {
@@ -77,6 +82,27 @@ public class UserServiceIntegrationTest {
         await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
             User foundUser = userRepository.findUsersWithIdGreaterThanZero().stream()
                     .filter(u -> "asyncuser".equals(u.getUsername()))
+                    .findFirst()
+                    .orElse(null);
+            assertThat(foundUser).isNotNull();
+        });
+    }
+
+    @Test
+    public void testAddUserWithManualThread() {
+        // Given
+        UserDto userDto = UserDto.builder()
+                .username("manualuser")
+                .email("manualuser@example.com")
+                .build();
+
+        // When
+        userService.addUserWithManualThread(userDto);
+
+        // Then
+        await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
+            User foundUser = userRepository.findUsersWithIdGreaterThanZero().stream()
+                    .filter(u -> "manualuser".equals(u.getUsername()))
                     .findFirst()
                     .orElse(null);
             assertThat(foundUser).isNotNull();
