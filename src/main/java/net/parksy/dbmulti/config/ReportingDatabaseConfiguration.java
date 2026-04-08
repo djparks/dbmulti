@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "net.parksy.dbmulti",
+        basePackages = DatabaseConfiguration.BASE_PACKAGE,
         includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = ReportingRepository.class),
         entityManagerFactoryRef = "reportingEntityManagerFactory",
         transactionManagerRef = "reportingTransactionManager"
@@ -35,7 +35,7 @@ public class ReportingDatabaseConfiguration {
             @Qualifier("firstJpaProperties") JpaProperties jpaProperties) {
         return builder
                 .dataSource(dataSource)
-                .packages("net.parksy.dbmulti.entity")
+                .packages(DatabaseConfiguration.BASE_PACKAGE)
                 .persistenceUnit("reporting")
                 .properties(jpaProperties.getProperties())
                 .build();

@@ -25,13 +25,14 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = "net.parksy.dbmulti",
+        basePackages = DatabaseConfiguration.BASE_PACKAGE,
         excludeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = ReportingRepository.class),
         entityManagerFactoryRef = "entityManagerFactory",
         transactionManagerRef = "transactionManager"
 )
 @Slf4j
 public class DatabaseConfiguration {
+    public static final String BASE_PACKAGE = "net.parksy.dbmulti";
 
     @Primary
     @Bean
@@ -49,7 +50,7 @@ public class DatabaseConfiguration {
     ) {
         return builder
                 .dataSource(dataSource)
-                .packages("net.parksy.dbmulti.entity")
+                .packages(BASE_PACKAGE)
                 .persistenceUnit("primary")
                 .properties(jpaProperties.getProperties())
                 .build();
