@@ -1,8 +1,8 @@
-package net.parksy.dbmulti;
+package net.parksy.dbmulti.service;
 
+import net.parksy.dbmulti.UserDto;
 import net.parksy.dbmulti.entity.User;
 import net.parksy.dbmulti.repository.UserRepository;
-import net.parksy.dbmulti.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
