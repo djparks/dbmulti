@@ -2,11 +2,11 @@ package net.parksy.dbmulti;
 
 import net.parksy.dbmulti.entity.User;
 import net.parksy.dbmulti.repository.UserRepository;
+import net.parksy.dbmulti.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
