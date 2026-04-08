@@ -28,11 +28,19 @@ import javax.sql.DataSource;
 @Slf4j
 public class ReportingDatabaseConfiguration {
 
+    @Bean(name = "reportJpaProperties")
+    @ConfigurationProperties("spring.jpa.hibernate")
+    public JpaProperties reportJpaProperties() {
+        JpaProperties jpaProperties = new JpaProperties();
+        log.info("jpa properties: {}", jpaProperties.getProperties());
+        return jpaProperties;
+    }
+
     @Bean(name = "reportingEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean reportingEntityManagerFactory(
             EntityManagerFactoryBuilder builder,
             @Qualifier("reportingDataSource") DataSource dataSource,
-            @Qualifier("firstJpaProperties") JpaProperties jpaProperties) {
+            @Qualifier("reportJpaProperties") JpaProperties jpaProperties) {
         return builder
                 .dataSource(dataSource)
                 .packages(DatabaseConfiguration.BASE_PACKAGE)
