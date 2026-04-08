@@ -4,7 +4,6 @@ import jakarta.persistence.EntityManager;
 import net.parksy.dbmulti.UserDto;
 import net.parksy.dbmulti.entity.User;
 import net.parksy.dbmulti.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +12,7 @@ import java.util.List;
 
 @Service
 public class UserService {
-    public UserService(UserRepository userRepository, @Qualifier("entityManagerFactory") EntityManager entityManager) {
+    public UserService(UserRepository userRepository, EntityManager entityManager) {
         this.userRepository = userRepository;
         this.entityManager = entityManager;
     }
