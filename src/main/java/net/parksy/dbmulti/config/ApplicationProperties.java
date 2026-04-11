@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "first", ignoreUnknownFields = false)
 public class ApplicationProperties {
     private Datasource datasource = new Datasource();
+    private Hibernate hibernate = new Hibernate();
 
     @Data
     public static class Datasource {
@@ -16,5 +17,16 @@ public class ApplicationProperties {
         private String driverClassName;
         private String username;
         private String password;
+    }
+
+    @Data
+    public static class Hibernate {
+        private Naming naming = new Naming();
+    }
+
+    @Data
+    public static class Naming {
+        private String physicalStrategy;
+        private String implicitStrategy;
     }
 }

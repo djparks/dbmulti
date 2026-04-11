@@ -37,10 +37,10 @@ public class DatabaseConfiguration {
     @Primary
     @Bean
     @ConfigurationProperties("spring.jpa")
-    public JpaProperties firstJpaProperties() {
+    public JpaProperties firstJpaProperties(ApplicationProperties applicationProperties) {
         JpaProperties jpaProperties = new JpaProperties();
-        jpaProperties.getProperties().put("hibernate.physical_naming_strategy", "org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy");
-        jpaProperties.getProperties().put("hibernate.implicit_naming_strategy", "org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy");
+        jpaProperties.getProperties().put("hibernate.physical_naming_strategy", applicationProperties.getHibernate().getNaming().getPhysicalStrategy());
+        jpaProperties.getProperties().put("hibernate.implicit_naming_strategy", applicationProperties.getHibernate().getNaming().getImplicitStrategy());
         log.info("jpa properties: {}", jpaProperties.getProperties());
         return jpaProperties;
     }
